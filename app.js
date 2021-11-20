@@ -1,7 +1,6 @@
 require('dotenv').config()
 require('express-async-errors')
 
-
 const express = require('express')
 const fileUpload = require('express-fileupload')
 const connectDB = require('./db/connect')
@@ -11,6 +10,7 @@ const blogsRouter = require('./routes/blogsRoute')
 const authRouter = require('./routes/authRoute')
 const authMiddleware = require('./middleware/auth')
 const cloudinary = require('cloudinary').v2
+const cors = require('cors')
 
 cloudinary.config({
     cloud_name:process.env.CLOUD_NAME,
@@ -27,9 +27,11 @@ app.get('/',(req, res)=>{
 })
 app.use(express.json());
 app.use(fileUpload({useTempFiles:true}))
+app.use(cors())
 
 app.use('/api/v1/blogs',authMiddleware, blogsRouter)
 app.use('/api/v1/auth', authRouter)
+
 
 app.use(errorHandlerMiddleware)
 app.use(notFoundMiddleware)
