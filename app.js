@@ -26,15 +26,15 @@ const app = express()
 
 const port = process.env.PORT || 5000
 
-// app.get('/',(req, res)=>{
-//     res.send('Blogs API')
-// })
 
-app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 app.use(express.json());
 app.use(fileUpload({useTempFiles:true}))
 // app.use(cors())
+app.get('/',(req, res)=>{
+    res.redirect('/api-docs');
+})
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 app.use('/api/v1/blogs',authMiddleware, blogsRouter)
 app.use('/api/v1/auth', authRouter)
