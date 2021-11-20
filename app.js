@@ -18,16 +18,23 @@ cloudinary.config({
     api_secret:process.env.CLOUD_API_SECRET
 })
 
+const swaggerUI = require('swagger-ui-express')
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./swagger.yaml')
+
 const app = express()
 
 const port = process.env.PORT || 5000
 
-app.get('/',(req, res)=>{
-    res.send('Blogs API')
-})
+// app.get('/',(req, res)=>{
+//     res.send('Blogs API')
+// })
+
+app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+
 app.use(express.json());
 app.use(fileUpload({useTempFiles:true}))
-app.use(cors())
+// app.use(cors())
 
 app.use('/api/v1/blogs',authMiddleware, blogsRouter)
 app.use('/api/v1/auth', authRouter)

@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: BLOGS API
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://blogs-api-original.herokuapp.com/api/v1
+  variables: {}
+paths:
+  /blogs:
+    get:
+      tags:
+      - Blogs
+      summary: Get All Blogs
+      operationId: GetAllBlogs
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+      - Blogs
+      summary: Create Blog
+      operationId: CreateBlog
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBlogRequest'
+            example:
+              title: Blog Title
+              body: Blog Content
+              image: imageUrl
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /blogs/uploads:
+    post:
+      tags:
+        - Blogs
+      summary: Uploads an image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /blogs/{id}: 
+    parameters: 
+    - in: path 
+      name: id 
+      schema: 
+        type: string 
+      required: true 
+      description: The Blog ID
+    delete:
+      tags:
+      - Blogs
+      summary: Delete Blog
+      operationId: DeleteBlog
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  
+    
+    patch:
+      tags:
+      - Blogs
+      summary: Update Blog
+      operationId: UpdateBlog
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBlogRequest'
+            example:
+              title: Blog Title
+              content: Blog Content
+              blogCover: imageURL
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/register:
+    post:
+      tags:
+      - Auth
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+            example:
+              name: Name
+              email: user@mail.com
+              password: userpassword
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+      - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+            example:
+              email:  user@mail.com
+              password: userpassword
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+components:
+  schemas:
+    RegisterUserRequest:
+      title: RegisterUserRequest
+      required:
+      - name
+      - email
+      - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: Name
+        email: demo@mail.com
+        password: demopassword
+    CreateBlogRequest:
+      title: CreateBlogRequest
+      required:
+      - image
+      - body
+      - title
+      type: object
+      properties:
+        image:
+          type: string
+        body:
+          type: string
+        title:
+          type: string
+      example:
+        title: Blog Title
+        body: Blog Content
+        image: imageURL
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: user@mail.com
+        password: userpassword
+    UpdateBlogRequest:
+      title: UpdateBlogRequest
+      required:
+      - title
+      - content
+      - blogCover
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        blogCover:
+          type: string
+      example:
+        title: Blog Title
+        content: Blog Content
+        blogCover: imageURL
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+- httpBearer: []
+tags:
+
+- name: Auth
+  description: ''
+- name: Blogs
+  description: ''
